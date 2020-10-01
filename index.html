@@ -96,8 +96,7 @@
         function checkedHandler(event) {
             var listItemIndex = event.srcElement.id.charAt(event.srcElement.id.length -1);
             updateTaskListItem(listItemIndex,
-            {text:event.srcElement.parentElement.querySelector("span"), complete: event.srcElement.checked});
-            document.getElementById("task-complete-"+listItemIndex).style="";
+            {text:event.srcElement.parentElement.querySelector("span"), complete: event.srcElement.checked}); 
         }
 
 
