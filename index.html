@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    <input type="text" placeholder="Enter a text.." name="task" id="taskInput">
+    <button id="addTaskButton"type="submit">Add Task</button>
+    <ul id="taskList">
+    </ul>
+    <script>
+        function getTaskList ()
+        {
+            return JSON.parse(localStorage.getItem("taskList"));
+        }
+        function saveNewTaskItem(newTask)
+        {
+            //save the new task to localStorage
+
+            var taskList = getTaskList();
+
+            if (!taskList)
+                taskList = new Array();
+        
+            taskList.push(newTask);
+            localStorage.setItem("taskList",JSON.stringify(taskList));
+        }
+
+        function updateTaskListItem(index,task)
+        {
+            var taskList = getTaskList();
+
+            //taskList[index].complete = !taskList[index].complete;
+            taskList[index] =task;
+            localStorage.setItem("taskList",JSON.stringify(taskList));
+        }
+
+        function addNewTaskListItem(newTask) {
+
+            //create the new list item
+            var newListItem = document.createElement("li");
+            
+
+            //create the checkbox input element
+            var newCheckbox = document.createElement('input');
+
+            //set input element to checkbox type
+            newCheckbox.setAttribute("type","checkbox");
+            newCheckbox.addEventListener("click",checkedHandler);
+            newCheckbox.checked= newTask.complete;
+            newCheckbox.setAttribute("id","task-complete-" + document.getElementById('taskList').children.length);
+            //ad checkbox into list item
+            newListItem.appendChild(newCheckbox);
+
+
+           //create task textnode
+           var taskTextSpan = document.createElement('span');
+            var taskText = document.createTextNode(newTask.text);
+            taskTextSpan.appendChild(taskText);
+            taskTextSpan.setAttribute("id","span-" + document.getElementById('taskList').children.length);
+            newListItem.appendChild(taskTextSpan);  // add text to
+
+            //create delete button
+            var deleteButton= document.createElement("button");
+            var textInDeleteButton = document.createTextNode("X");
+            deleteButton.appendChild(textInDeleteButton);
+            deleteButton.addEventListener("click",deleteHandler);
+            deleteButton.setAttribute("id","button-"+ document.getElementById('taskList').children.length);
+            newListItem.appendChild(deleteButton);
+
+            //create edit button
+            var editButton = document.createElement("button");
+            var textInEditButton = document.createTextNode("Edit");
+            editButton.appendChild(textInEditButton);
+            editButton.addEventListener("click",editHandler );
+            editButton.setAttribute("id","edit-" +document.getElementById('taskList').children.length);
+            newListItem.appendChild(editButton);
+
+
+            document.getElementById('taskList').appendChild(newListItem);
+        }
+
+
+
+        function addTaskHandler(){
+            var newTask= {text:document.getElementById('taskInput').value,
+                        complete: false};
+            saveNewTaskItem(newTask);
+            addNewTaskListItem(newTask);
+            document.getElementById('taskInput').value= '';
+        }
+
+        function checkedHandler(event) {
+            var listItemIndex = event.srcElement.id.charAt(event.srcElement.id.length -1);
+            updateTaskListItem(listItemIndex,
+            {text:event.srcElement.parentElement.querySelector("span"), complete: event.srcElement.checked});
+            document.getElementById("task-complete-"+listItemIndex).style="";
+        }
+
+
+        //handler for task deletion button clicks
+        function deleteHandler(event){
+
+            var confirmResp = confirm("Are you sure you want to delete this task?");
+            if(!confirmResp)
+                return;
+            
+            var listItemIndex = event.srcElement.id.charAt(event.srcElement.id.length-1);
+
+            //remove item from taskList in localStorage
+            var taskList=getTaskList();
+            taskList.splice(listItemIndex,1);
+            localStorage.setItem('taskList',JSON.stringify(taskList));
+            
+            //remove node from DOM
+            document.getElementById(event.srcElement.id).parentNode.remove();     
+        }
+
+        //handler for edit when button clicked
+        function editHandler(event)
+        {   var editButton=event.srcElement;
+            var taskEditInput;
+            var taskTextSpan=event.srcElement.parentElement.querySelector('span');
+            if(taskTextSpan)
+                {taskEditInput = document.createElement("input");
+                taskEditInput.setAttribute("type","text");
+                taskEditInput.value = taskTextSpan.innerHTML; 
+                event.srcElement.parentElement.replaceChild(taskEditInput,taskTextSpan);
+                editButton.innerText="Save";
+                }
+            else
+            {
+                //span does not exist, save and exit editing
+                taskEditInput=event.srcElement.parentElement.querySelector("input[type=text]");
+                taskTextSpan=document.createElement("span");
+                taskTextSpan.innerText =taskEditInput.value;
+                
+                updateTaskListItem(editButton.id.charAt(editButton.id.length-1),{
+                    text: taskTextSpan.innerText, 
+                    complete: event.srcElement.parentElement.querySelector("input[type=checkbox]").checked
+                });
+
+                event.srcElement.parentElement.replaceChild(taskTextSpan,taskEditInput);
+                editButton.innerText = "Edit";
+                
+            }
+
+        }
+
+        document.getElementById('addTaskButton').addEventListener('click',addTaskHandler);
+
+        var taskList = JSON.parse(localStorage.getItem('taskList'));
+        if(taskList){
+        taskList.forEach(function(task) {
+            addNewTaskListItem(task);
+        });
+        }
+    </script>
+</body>
+</html>
