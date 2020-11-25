@@ -37,9 +37,7 @@ h1{
 }
 
 #taskInput {
-    border: 2px solid $secondary-color ;
-    border-radius: 10px;
-    padding: 7px;
+    @include input;
     width: 100%;
     margin-right: 5px;
     &:focus{
@@ -51,12 +49,18 @@ ul{
     list-style-type: none;
     margin-top: 2.5rem;
     li{
-        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        padding: 15px 5px;
+        &:hover{
+            background-color: $background;
+            border-radius: 10px;
+        }
     }
     .text-node{
         margin: 0 1rem;
         padding: 0 10px;
- 
+        width: 75%;
     }
 }
 
@@ -102,6 +106,24 @@ ul{
     }
 }
 
+.edit-input{
+    @include input;
+    margin: 0 5px;
+    &:focus{
+        outline:none;
+    }
+}
+
+.checkbox{
+    width: 25px;
+    height: 25px;
+    outline: none;
+}
+
+.checked{
+    text-decoration: line-through;
+    opacity: 0.7;
+}
 
 @keyframes pulse
 {

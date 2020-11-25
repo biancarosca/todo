@@ -2,3 +2,9 @@ $background: #F2F4F9;
 $primary-color: #333753;
 $secondary-color : #4E516A;
 $font-stack: 'Roboto',sans-serif;
+
+@mixin input {
+    border: 2px solid $secondary-color ;
+    border-radius: 10px;
+    padding: 7px;
+}

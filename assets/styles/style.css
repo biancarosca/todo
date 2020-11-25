@@ -52,12 +52,20 @@ ul {
 }
 
 ul li {
-  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  padding: 15px 5px;
+}
+
+ul li:hover {
+  background-color: #F2F4F9;
+  border-radius: 10px;
 }
 
 ul .text-node {
   margin: 0 1rem;
   padding: 0 10px;
+  width: 75%;
 }
 
 .delete-btn, .edit-btn {
@@ -100,6 +108,28 @@ ul .text-node {
   color: #4E516A;
   cursor: pointer;
   animation: pulse 1.25s infinite;
+}
+
+.edit-input {
+  border: 2px solid #4E516A;
+  border-radius: 10px;
+  padding: 7px;
+  margin: 0 5px;
+}
+
+.edit-input:focus {
+  outline: none;
+}
+
+.checkbox {
+  width: 25px;
+  height: 25px;
+  outline: none;
+}
+
+.checked {
+  text-decoration: line-through;
+  opacity: 0.7;
 }
 
 @keyframes pulse {

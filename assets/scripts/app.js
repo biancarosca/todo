@@ -1,3 +1,7 @@
+// NEED A FUNCTION THAT UPDATES THE INDEXES OF THE SPAN CORRESPONDING TO THE DELETE BUTTONS , after some have been deleted 
+//or other idea?
+
+
 const getTaskList = () => {
   return JSON.parse(localStorage.getItem('taskList'));
 }
@@ -17,6 +21,7 @@ const updateTaskListItem = (index, task) => {
 
   let taskList = getTaskList();
   taskList[index] = task;
+  console.log('update', taskList);
   localStorage.setItem('taskList', JSON.stringify(taskList));
 }
 
@@ -29,6 +34,7 @@ const addNewTaskListItem = (newTask) => {
   newCheckbox.setAttribute('type', 'checkbox');
   newCheckbox.addEventListener('click', checkedHandler);
   newCheckbox.checked = newTask.complete;
+  newCheckbox.classList.add('checkbox');
   newCheckbox.setAttribute(
     'id',
     'task-complete-' + document.getElementById('taskList').children.length
@@ -68,6 +74,10 @@ const addNewTaskListItem = (newTask) => {
   editButton.classList.add('edit-btn');
   newListItem.appendChild(editButton);
 
+  //line-through style
+    if(newTask.complete)
+      taskTextSpan.classList.add('checked');
+  
   document.getElementById('taskList').appendChild(newListItem);
 }
 
@@ -92,26 +102,33 @@ const checkedHandler = (event) => {
   let listItemIndex = event.target.id.charAt(
     event.target.id.length - 1
   );
+
+  let taskSpan = event.target.parentElement.querySelector('span');
+  if(event.target.checked)
+    taskSpan.classList.add('checked');
+  else
+    taskSpan.classList.remove('checked');
+
   updateTaskListItem(listItemIndex, {
-    text: event.target.parentElement.querySelector('span').innerHTML,
+    text: taskSpan.innerHTML,
     complete: event.target.checked,
   });
 }
 
 //handler for task deletion button clicks
 const deleteHandler= (event) => {
-  let confirmResp = confirm('Are you sure you want to delete this task?');
-  if (!confirmResp) return;
 
   let listItemIndex = event.target.parentNode.id.charAt(
     event.target.parentNode.id.length - 1
   );
+  console.log(listItemIndex);
+
 
   //remove item from taskList in localStorage
   let taskList = getTaskList();
   taskList.splice(listItemIndex, 1);
   localStorage.setItem('taskList', JSON.stringify(taskList));
-  
+  console.log('delete',taskList);
   //remove from DOM
   document.getElementById(event.target.parentNode.id).parentNode.remove();
 }
@@ -121,10 +138,10 @@ const editHandler = (event) => {
   let editButton = event.target;
   let taskEditInput;
   let taskTextSpan = document.getElementById('span-' + event.target.parentElement.id.charAt(event.target.parentElement.id.length-1));
-  console.log(event.target.parentElement.id.charAt(event.target.parentElement.id.length-1));
   if (taskTextSpan) {
     //Edit was clicked
     taskEditInput = document.createElement('input');
+    taskEditInput.classList.add('edit-input');
     taskEditInput.setAttribute('type', 'text');
     taskEditInput.value = taskTextSpan.innerHTML;
     taskTextSpan.parentElement.replaceChild(taskEditInput, taskTextSpan);
@@ -165,7 +182,7 @@ document.getElementById('addTaskButton').addEventListener('click', addTaskHandle
 
 const loadFromLocalStorage = () => {
 let taskList = JSON.parse(localStorage.getItem('taskList'));
-//console.log(taskList);
+console.log('log',taskList);
 if (taskList) {
   taskList.forEach((task) => {
     addNewTaskListItem(task);
