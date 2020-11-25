@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #F2F4F9;
+  font-family: "Roboto", sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: #4E516A;
+  margin-bottom: 3rem;
+  font-weight: 300;
+}
+
+h1 span {
+  color: #333753;
+}
+
+.app-container {
+  padding: 2rem;
+  padding-bottom: 10rem;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 18px 16px -6px rgba(0, 0, 0, 0.2);
+  height: 80vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#taskInput {
+  border: 2px solid #4E516A;
+  border-radius: 10px;
+  padding: 7px;
+  width: 100%;
+  margin-right: 5px;
+}
+
+#taskInput:focus {
+  outline: none;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 2.5rem;
+}
+
+ul li {
+  margin-bottom: 1rem;
+}
+
+ul .text-node {
+  margin: 0 1rem;
+  padding: 0 10px;
+}
+
+.delete-btn, .edit-btn {
+  margin: 0;
+}
+
+#addTaskButton {
+  color: #333753;
+  font-size: 1.5rem;
+}
+
+#addTaskButton:hover {
+  color: #4E516A;
+  animation: pulse 1.25s infinite;
+  cursor: pointer;
+}
+
+.input-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fa-trash, .fa-edit, .fa-save {
+  color: #333753;
+}
+
+.fa-trash {
+  margin-right: 10px;
+}
+
+.fa-trash:hover {
+  color: #4E516A;
+  cursor: pointer;
+  animation: pulse 1.25s infinite;
+}
+
+.fa-edit:hover, .fa-save:hover {
+  color: #4E516A;
+  cursor: pointer;
+  animation: pulse 1.25s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+/*# sourceMappingURL=style.css.map */

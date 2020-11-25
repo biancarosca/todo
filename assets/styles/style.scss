@@ -1,0 +1,117 @@
+@import './variables';
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+body{
+
+    background-color: $background;
+    font-family: $font-stack;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1{
+    color: $secondary-color;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    span{
+        color: $primary-color;
+    }
+}
+
+.app-container{
+    padding: 2rem;
+    padding-bottom: 10rem;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 18px 16px -6px rgba(0, 0, 0, 0.2);
+    height: 80vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#taskInput {
+    border: 2px solid $secondary-color ;
+    border-radius: 10px;
+    padding: 7px;
+    width: 100%;
+    margin-right: 5px;
+    &:focus{
+        outline:none;
+    }
+}
+
+ul{
+    list-style-type: none;
+    margin-top: 2.5rem;
+    li{
+        margin-bottom: 1rem;
+    }
+    .text-node{
+        margin: 0 1rem;
+        padding: 0 10px;
+ 
+    }
+}
+
+.delete-btn,.edit-btn{
+    margin:0;
+}
+
+#addTaskButton{
+    color: $primary-color;
+    font-size: 1.5rem;
+    &:hover{
+        color: $secondary-color;
+        animation: pulse 1.25s infinite;
+        cursor: pointer;
+    }
+}
+
+.input-container{
+    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+}
+
+.fa-trash,.fa-edit,.fa-save {
+    color: $primary-color;
+}
+
+.fa-trash{
+    margin-right: 10px;
+    &:hover{
+        color: $secondary-color;
+        cursor: pointer;
+        animation: pulse 1.25s infinite;
+    }
+}
+
+.fa-edit,.fa-save{
+    &:hover{
+        color: $secondary-color;
+        cursor: pointer;
+        animation: pulse 1.25s infinite;
+    }
+}
+
+
+@keyframes pulse
+{
+    0% {
+        transform: scale(.8);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(.8);
+      }
+}
