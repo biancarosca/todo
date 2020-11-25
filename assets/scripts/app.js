@@ -1,7 +1,3 @@
-// NEED A FUNCTION THAT UPDATES THE INDEXES OF THE SPAN CORRESPONDING TO THE DELETE BUTTONS , after some have been deleted 
-//or other idea?
-
-
 const getTaskList = () => {
   return JSON.parse(localStorage.getItem('taskList'));
 }
@@ -21,8 +17,14 @@ const updateTaskListItem = (index, task) => {
 
   let taskList = getTaskList();
   taskList[index] = task;
-  console.log('update', taskList);
   localStorage.setItem('taskList', JSON.stringify(taskList));
+}
+
+const updateDeleteSpanId = () => {
+  let deleteSpans = document.querySelectorAll('.delete-btn');
+  deleteSpans.forEach( (span,index) => {
+    span.id = 'span-' + index;
+  })
 }
 
 const addNewTaskListItem = (newTask) => {
@@ -117,20 +119,19 @@ const checkedHandler = (event) => {
 
 //handler for task deletion button clicks
 const deleteHandler= (event) => {
+  //remove from DOM
+  document.getElementById(event.target.parentNode.id).parentNode.remove();
 
+  updateDeleteSpanId();
   let listItemIndex = event.target.parentNode.id.charAt(
     event.target.parentNode.id.length - 1
   );
-  console.log(listItemIndex);
-
 
   //remove item from taskList in localStorage
   let taskList = getTaskList();
   taskList.splice(listItemIndex, 1);
   localStorage.setItem('taskList', JSON.stringify(taskList));
-  console.log('delete',taskList);
-  //remove from DOM
-  document.getElementById(event.target.parentNode.id).parentNode.remove();
+  
 }
 
 //handler for edit when button clicked
@@ -172,17 +173,28 @@ const editHandler = (event) => {
         deleteHandler(event);
     }
 
+    //if task is checked keep the line-through 
+    let currentCheckbox = event.target.parentElement.parentElement.querySelector('input');
+    if(currentCheckbox.checked)
+      taskTextSpan.classList.add('checked');
+
     event.target.parentElement.parentElement.replaceChild(taskTextSpan, taskEditInput);
     editButton.parentNode.innerHTML = '<i class="far fa-edit"></i>';
+
+    
   }
 }
 
 document.getElementById('addTaskButton').addEventListener('click', addTaskHandler);
 
+//add task when 'Enter' is pressed
+document.addEventListener('keyup',(event) => {
+  if(event.keyCode === 13)
+    addTaskHandler();
+})
 
 const loadFromLocalStorage = () => {
 let taskList = JSON.parse(localStorage.getItem('taskList'));
-console.log('log',taskList);
 if (taskList) {
   taskList.forEach((task) => {
     addNewTaskListItem(task);
